@@ -1,0 +1,24 @@
+
+.dialogs {
+  display: flex;
+}
+
+.dialogs .dialogs-items .dialogs-item {
+  margin-bottom: 30px;
+}
+
+.dialogs .dialogs-items .dialogs-item a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #000000;
+}
+
+.dialogs .dialogs-messages {
+  margin-left: 300px;
+}
+
+.dialogs .dialogs-messages p {
+  padding: 15px;
+  border: 1px solid #767777;
+  border-radius: 10px;
+}

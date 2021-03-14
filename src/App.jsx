@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { Route } from "react-router-dom"
-import './App.scss'
+import Dialogs from './components/Dialogs/Dialogs';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
+import Users from "./components/Users/Users";
+import './App.scss'
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <div className="container">
@@ -15,6 +16,12 @@ function App() {
           <div className="content">
             <Route path="/profile">
               <Profile />
+            </Route>
+            <Route path="/messages">
+              <Dialogs />
+            </Route>
+            <Route path="/users">
+              <Users />
             </Route>
           </div>
         </div>
