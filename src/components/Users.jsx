@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import { Card, Button, Pagination, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,7 +42,7 @@ const Users = () => {
     axios
       .get(`https://social-network.samuraijs.com/api/1.0/users?count=${pageSize}&page=${currentPage}`)
       .then(({ data }) => dispatch(setUsers(data.items)))
-  }, [currentPage])
+  }, [currentPage, pageSize])
 
   const onSetCurrentPage = (n) => dispatch(setCurrentPage(n))
 
@@ -58,7 +59,9 @@ const Users = () => {
         : <UserCard>
           {users.map(user => (
             <Card key={user.id}>
-              <Card.Img variant="top" src={user.photos.small || userLogo} />
+              <NavLink to={`/profile/${user.id}`}>
+                <Card.Img variant="top" src={user.photos.small || userLogo} />
+              </NavLink>
               <Card.Body>
                 <Card.Title>{user.name}</Card.Title>
                 <Card.Text>{user.status}</Card.Text>

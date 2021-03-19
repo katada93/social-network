@@ -17,7 +17,7 @@ const App = () => {
             <Navbar />
           </Col>
           <Col sm={9}>
-            <Route path="/profile">
+            <Route path="/profile/:userId?">
               <Profile />
             </Route>
             <Route path="/messages">

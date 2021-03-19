@@ -20,15 +20,12 @@ const slice = createSlice({
       }
       state.posts.push(newPost)
     },
-    rm: state => {
-      state.arr.pop()
-    },
-    addValue: (state, action) => {
-      state.arr.push(action.payload)
+    setUserProfile: (state, action) => {
+      state.profile = action.payload
     }
   }
 })
 
-export const { addPost, rm, addValue } = slice.actions
+export const { addPost, setUserProfile } = slice.actions
 
 export default slice.reducer
