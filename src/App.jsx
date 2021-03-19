@@ -1,19 +1,22 @@
 import { Route } from "react-router-dom"
 import Dialogs from './components/Dialogs/Dialogs';
-import Header from './components/Header/Header';
+import Header from './components/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-import Users from "./components/Users/Users";
+import Users from "./components/Users";
+import { Container, Row, Col } from 'react-bootstrap'
 import './App.scss'
 
 const App = () => {
   return (
     <div className="App">
-      <div className="container">
+      <Container>
         <Header />
-        <div className="wrapper">
-          <Navbar />
-          <div className="content">
+        <Row>
+          <Col sm={3}>
+            <Navbar />
+          </Col>
+          <Col sm={9}>
             <Route path="/profile">
               <Profile />
             </Route>
@@ -23,9 +26,9 @@ const App = () => {
             <Route path="/users">
               <Users />
             </Route>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }

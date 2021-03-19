@@ -16,7 +16,9 @@ const MyPosts = () => {
     .map(({ id, message, likesCount }) => <Post key={id} id={id} message={message} likesCount={likesCount} />)
 
   const onAddPost = () => {
-    dispatch(addPost(value))
+    if (value) {
+      dispatch(addPost(value))
+    }
     setValue('')
   }
   return (

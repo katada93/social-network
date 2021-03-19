@@ -16,7 +16,9 @@ const Dialogs = () => {
     .map(({ id, message }) => <Message key={id} id={id} message={message} />)
 
   const onSendMessage = () => {
-    dispatch(sendMessage(value))
+    if (value) {
+      dispatch(sendMessage(value))
+    }
     setValue('')
   }
 
