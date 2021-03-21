@@ -16,7 +16,11 @@ const Header = () => {
       .get('https://social-network.samuraijs.com/api/1.0/auth/me', {
         withCredentials: true
       })
-      .then(({ data }) => dispatch(setAuthUserData(data.data)))
+      .then(({ data }) => {
+        if (data.resultCode === 0) {
+          dispatch(setAuthUserData(data.data))
+        }
+      })
   }, [])
   return (
     <Navbar bg="dark" variant="dark">

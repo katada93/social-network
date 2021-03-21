@@ -40,7 +40,9 @@ const Users = () => {
   useEffect(() => {
     dispatch(setLoading(true))
     axios
-      .get(`https://social-network.samuraijs.com/api/1.0/users?count=${pageSize}&page=${currentPage}`)
+      .get(`https://social-network.samuraijs.com/api/1.0/users?count=${pageSize}&page=${currentPage}`, {
+        withCredentials: true
+      })
       .then(({ data }) => dispatch(setUsers(data.items)))
   }, [currentPage, pageSize])
 
@@ -66,13 +68,43 @@ const Users = () => {
                 <Card.Title>{user.name}</Card.Title>
                 <Card.Text>{user.status}</Card.Text>
                 {user.followed
-                  ? <Button variant="danger" onClick={() => dispatch(unFollow(user.id))}>unfollow</Button>
-                  : <Button onClick={() => dispatch(follow(user.id))}>follow</Button>}
+                  ? <Button variant="danger" onClick={() => {
+                    axios
+                      .delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {
+                        withCredentials: true,
+                        headers: {
+                          "API-KEY": "44b52217-0502-40be-b94d-1f8c6b606634"
+                        }
+                      })
+                      .then(({ data }) => {
+                        if (data.resultCode === 0) {
+                          dispatch(unFollow(user.id))
+                        }
+                      })
+                  }}>
+                    unfollow
+                    </Button>
+                  : <Button onClick={() => {
+                    axios
+                      .post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {}, {
+                        withCredentials: true,
+                        headers: {
+                          "API-KEY": "44b52217-0502-40be-b94d-1f8c6b606634"
+                        }
+                      })
+                      .then(({ data }) => {
+                        if (data.resultCode === 0) {
+                          dispatch(follow(user.id))
+                        }
+                      })
+                  }}>
+                    follow
+                    </Button>}
               </Card.Body>
             </Card>
           ))}
         </UserCard>}
-    </div>
+    </div >
   )
 }
 
