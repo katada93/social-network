@@ -10,7 +10,7 @@ const MyPosts = () => {
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
 
-  const posts = useSelector(({ profile }) => profile.posts)
+  const { posts } = useSelector(({ profile }) => profile)
 
   const postsElements = posts
     .map(({ id, message, likesCount }) => <Post key={id} id={id} message={message} likesCount={likesCount} />)

@@ -10,12 +10,13 @@ import { withRouter } from 'react-router'
 const Profile = ({ match }) => {
   const dispatch = useDispatch()
   const { profile } = useSelector(({ profile }) => profile)
+  const userId = match.params.userId || 12402
 
   useEffect(() => {
     axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/${match.params.userId}`)
+      .get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
       .then(({ data }) => dispatch(setUserProfile(data)))
-  }, [match])
+  }, [userId])
 
   return (
     <div className="profile">

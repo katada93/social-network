@@ -6,10 +6,9 @@ const userLogo = 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-use
 const backgroundImg = 'https://freehtmlthemes.ru/assets/images/articles/css-fon.jpg'
 
 const ProfileInfo = ({ profile }) => {
-  console.log(profile)
 
   if (!profile) {
-    <Spinner animation="border" variant="primary" style={{ display: 'block', margin: '20px auto' }} />
+    return <Spinner animation="border" variant="primary" style={{ display: 'block', margin: '20px auto' }} />
   }
 
   return (
@@ -23,7 +22,7 @@ const ProfileInfo = ({ profile }) => {
         </div>
         <div className="user_data">
           <h3>{profile.fullName}</h3>
-          <p>Actor</p>
+          <p>{profile.aboutMe}</p>
         </div>
       </div>
     </div>
