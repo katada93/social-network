@@ -8,7 +8,8 @@ const slice = createSlice({
     pageCount: 25,
     pageSize: 50,
     currentPage: 1,
-    loading: true
+    loading: true,
+    following: false
   },
   reducers: {
     setUsers: (state, action) => {
@@ -36,9 +37,12 @@ const slice = createSlice({
     },
     setLoading: (state, action) => {
       state.loading = action.payload
+    },
+    setFollowing: (state, action) => {
+      state.following = action.payload
     }
   }
 })
 
-export const { follow, unFollow, setUsers, setCurrentPage, setLoading } = slice.actions
+export const { follow, unFollow, setUsers, setCurrentPage, setLoading, setFollowing } = slice.actions
 export default slice.reducer

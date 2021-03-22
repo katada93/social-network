@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Button, Container } from 'react-bootstrap'
 import { setAuthUserData } from '../redux/auth'
+import { NavLink } from 'react-router-dom'
 
 
 const logoImg = 'https://1000logos.net/wp-content/uploads/2016/11/Facebook-logo.png'
@@ -25,14 +26,14 @@ const Header = () => {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="/">
+        <NavLink to="/">
           <div className="header__logo" style={{ width: '100px' }}>
             <img
               src={logoImg}
               alt="Logo"
             />
           </div>
-        </Navbar.Brand>
+        </NavLink>
         {isAuth
           ? <span style={{ color: '#fff' }}>{login}</span>
           : <Button variant="outline-info">Login</Button>}

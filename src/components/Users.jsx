@@ -5,6 +5,7 @@ import { Card, Button, Pagination, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { follow, unFollow, setUsers, setCurrentPage, setLoading } from '../redux/users'
 import styled from 'styled-components'
+import { userAPI } from './api/api'
 
 const userLogo = 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'
 
@@ -39,11 +40,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(setLoading(true))
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0/users?count=${pageSize}&page=${currentPage}`, {
-        withCredentials: true
-      })
-      .then(({ data }) => dispatch(setUsers(data.items)))
+    userAPI.getUsers(pageSize, currentPage).then(({ items }) => dispatch(setUsers(items)))
   }, [currentPage, pageSize])
 
   const onSetCurrentPage = (n) => dispatch(setCurrentPage(n))
