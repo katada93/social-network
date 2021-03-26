@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import axios from 'axios'
 import { Card, Button, Pagination, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { follow, unFollow, setUsers, setCurrentPage, setLoading } from '../redux/users'
+import { follow, unFollow, setCurrentPage, fetchUsers } from '../redux/users'
 import styled from 'styled-components'
-import { userAPI } from './api/api'
 
 const userLogo = 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'
 
@@ -35,12 +33,11 @@ const UserCard = styled.div`
 
 const Users = () => {
   const dispatch = useDispatch()
-  const { users, pageCount, pageSize, currentPage, loading } = useSelector(({ users }) => users)
+  const { users, pageCount, pageSize, currentPage, loading, following } = useSelector(({ users }) => users)
   const arrOfPages = Array(pageCount).fill().map((_, i) => i + 1)
 
   useEffect(() => {
-    dispatch(setLoading(true))
-    userAPI.getUsers(pageSize, currentPage).then(({ items }) => dispatch(setUsers(items)))
+    dispatch(fetchUsers(pageSize, currentPage))
   }, [currentPage, pageSize])
 
   const onSetCurrentPage = (n) => dispatch(setCurrentPage(n))
@@ -65,36 +62,10 @@ const Users = () => {
                 <Card.Title>{user.name}</Card.Title>
                 <Card.Text>{user.status}</Card.Text>
                 {user.followed
-                  ? <Button variant="danger" onClick={() => {
-                    axios
-                      .delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {
-                        withCredentials: true,
-                        headers: {
-                          "API-KEY": "44b52217-0502-40be-b94d-1f8c6b606634"
-                        }
-                      })
-                      .then(({ data }) => {
-                        if (data.resultCode === 0) {
-                          dispatch(unFollow(user.id))
-                        }
-                      })
-                  }}>
+                  ? <Button disabled={following === user.id} variant="danger" onClick={() => { dispatch(unFollow(user.id)) }}>
                     unfollow
                     </Button>
-                  : <Button onClick={() => {
-                    axios
-                      .post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {}, {
-                        withCredentials: true,
-                        headers: {
-                          "API-KEY": "44b52217-0502-40be-b94d-1f8c6b606634"
-                        }
-                      })
-                      .then(({ data }) => {
-                        if (data.resultCode === 0) {
-                          dispatch(follow(user.id))
-                        }
-                      })
-                  }}>
+                  : <Button disabled={following === user.id} onClick={() => { dispatch(follow(user.id)) }}>
                     follow
                     </Button>}
               </Card.Body>
