@@ -5,6 +5,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import MyPosts from './MyPosts/MyPosts'
 import './Profile.scss'
 import { Redirect, withRouter } from 'react-router'
+import ProfileStatus from './ProfileInfo/ProfileStatus'
 
 const Profile = ({ match }) => {
   const dispatch = useDispatch()
@@ -22,6 +23,7 @@ const Profile = ({ match }) => {
   return (
     <div className="profile">
       <ProfileInfo profile={profile} />
+      <ProfileStatus status='hello' />
       <MyPosts />
     </div>
   )
