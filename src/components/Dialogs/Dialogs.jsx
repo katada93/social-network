@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router'
 import { sendMessage } from '../../redux/dialogs'
 import './Dialogs.scss'
 import DialogsItem from './DialogsItem/DialogsItem'
@@ -9,6 +10,8 @@ const Dialogs = () => {
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
   const { dialogs, messages } = useSelector(({ dialogs }) => dialogs)
+  const { isAuth } = useSelector(({ auth }) => auth)
+
   const dialogsElements = dialogs
     .map(({ id, name }) => <DialogsItem key={id} id={id} name={name} />)
 
@@ -20,6 +23,10 @@ const Dialogs = () => {
       dispatch(sendMessage(value))
     }
     setValue('')
+  }
+
+  if (!isAuth) {
+    return <Redirect to='/login' />
   }
 
   return (
