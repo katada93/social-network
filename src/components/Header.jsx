@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Button, Container } from 'react-bootstrap'
-import { setAuthUserData } from '../redux/auth'
+import { getUserAuthData } from '../redux/auth'
 import { NavLink } from 'react-router-dom'
 
 
@@ -13,15 +12,7 @@ const Header = () => {
   const { isAuth, login } = useSelector(({ auth }) => auth)
 
   useEffect(() => {
-    axios
-      .get('https://social-network.samuraijs.com/api/1.0/auth/me', {
-        withCredentials: true
-      })
-      .then(({ data }) => {
-        if (data.resultCode === 0) {
-          dispatch(setAuthUserData(data.data))
-        }
-      })
+    dispatch(getUserAuthData())
   }, [])
   return (
     <Navbar bg="dark" variant="dark">

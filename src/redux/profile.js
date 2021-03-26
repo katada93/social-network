@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { userAPI } from '../components/api/api'
 
 const slice = createSlice({
   name: 'profile',
@@ -27,5 +28,10 @@ const slice = createSlice({
 })
 
 export const { addPost, setUserProfile } = slice.actions
+
+export const getProfile = (userId) => async dispatch => {
+  const { data } = await userAPI.getProfile(userId)
+  dispatch(setUserProfile(data))
+}
 
 export default slice.reducer

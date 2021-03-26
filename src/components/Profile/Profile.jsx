@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUserProfile } from '../../redux/profile'
+import { getProfile } from '../../redux/profile'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import MyPosts from './MyPosts/MyPosts'
 import './Profile.scss'
@@ -13,9 +12,7 @@ const Profile = ({ match }) => {
   const userId = match.params.userId || 12402
 
   useEffect(() => {
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
-      .then(({ data }) => dispatch(setUserProfile(data)))
+    dispatch(getProfile(userId))
   }, [userId])
 
   return (
