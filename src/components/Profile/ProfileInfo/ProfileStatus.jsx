@@ -1,17 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateStatus } from '../../../redux/profile'
 
-const ProfileStatus = ({ status }) => {
+const ProfileStatus = () => {
+  const dispatch = useDispatch()
+  const { status } = useSelector(({ profile }) => profile)
+
   const [editMode, setEditMode] = useState(false)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(status)
 
+  const handleChange = (event) => {
+    setValue(event.target.value)
+  }
   const activateEditMode = () => setEditMode(true)
-  const deActivateEditMode = () => setEditMode(false)
+  const deActivateEditMode = () => {
+    setEditMode(false)
+    dispatch(updateStatus(value))
+  }
 
   return (
     <div className="profile-status">
-      {!editMode && <span onDoubleClick={activateEditMode}>{status}</span>}
-      {editMode && <input onBlur={deActivateEditMode} autoFocus value={status} type="text" />}
-
+      {!editMode && <span onDoubleClick={activateEditMode}>{status || 'no status'}</span>}
+      {editMode && <input onBlur={deActivateEditMode} autoFocus value={value} onChange={handleChange} type="text" />}
     </div>
   )
 }

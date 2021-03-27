@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { userAPI } from '../components/api/api'
+import { profileAPI } from '../components/api/api'
 
 const slice = createSlice({
   name: 'profile',
@@ -23,15 +23,32 @@ const slice = createSlice({
     },
     setUserProfile: (state, action) => {
       state.profile = action.payload
+    },
+    setStatus: (state, action) => {
+      state.status = action.payload
     }
   }
 })
 
-export const { addPost, setUserProfile } = slice.actions
+export const { addPost, setUserProfile, setStatus } = slice.actions
 
 export const getProfile = (userId) => async dispatch => {
-  const { data } = await userAPI.getProfile(userId)
+  const { data } = await profileAPI.getProfile(userId)
   dispatch(setUserProfile(data))
+}
+
+export const getStatus = (userId) => async dispatch => {
+  const { data } = await profileAPI.getStatus(userId)
+  dispatch(setStatus(data))
+}
+
+export const updateStatus = (status) => (dispatch) => {
+  profileAPI.updateStatus(status)
+    .then(({ data }) => {
+      if (data.resultCode === 0) {
+        dispatch(setStatus(status));
+      }
+    });
 }
 
 export default slice.reducer
