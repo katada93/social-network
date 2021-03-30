@@ -27,7 +27,7 @@ const Header = () => {
         </NavLink>
         {isAuth
           ? <span style={{ color: '#fff' }}>{login}</span>
-          : <Button variant="outline-info">Login</Button>}
+          : <NavLink to="/login"><Button variant="outline-info">Login</Button></NavLink>}
       </Container>
     </Navbar>
   )
