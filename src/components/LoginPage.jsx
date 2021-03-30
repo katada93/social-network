@@ -6,7 +6,7 @@ import { Button, Form } from 'react-bootstrap'
 const LoginPage = () => {
   return (
     <div className="login-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <h2 style={{ width: '35%' }}>Login</h2>
+      <h2 style={{ width: '100%', textAlign: 'center', marginBottom: '50px' }}>Login</h2>
       <LoginForm />
     </div>
   )
@@ -15,7 +15,7 @@ const LoginPage = () => {
 const schema = yup.object().shape({
   login: yup.string().required(),
   password: yup.string().min(6, 'Must be 6 characters or more').required(),
-  terms: yup.bool().required().oneOf([true], 'Terms must be accepted'),
+  term: yup.bool().required().oneOf([true], 'Term must be accepted'),
 });
 
 const LoginForm = () => {
@@ -25,12 +25,12 @@ const LoginForm = () => {
       initialValues={{
         login: '',
         password: '',
-        terms: false,
+        term: false
       }}
-      onSubmit={({ login, password, terms }, { setSubmitting }) => {
+      onSubmit={({ login, password, term, isStarted }, { setSubmitting, resetForm }) => {
         setTimeout(() => {
-          console.log(login, password, terms)
-          setSubmitting(false);
+          resetForm()
+          setSubmitting(false)
         }, 2000);
       }}
 
@@ -42,7 +42,8 @@ const LoginForm = () => {
         values,
         touched,
         errors,
-        isSubmitting
+        isSubmitting,
+        isValid
       }) => (
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Group controlId="loginFormLogin">
@@ -56,6 +57,9 @@ const LoginForm = () => {
               isInvalid={!!errors.login}
               placeholder="login"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.login}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="loginFormPassword">
             <Form.Control
@@ -66,22 +70,24 @@ const LoginForm = () => {
               onBlur={handleBlur}
               isValid={touched.password && !errors.password}
               isInvalid={!!errors.password}
-              feedback={errors.password}
               placeholder="password"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
             <Form.Check
               required
-              name="terms"
+              name="term"
               label="Remember me!"
               onChange={handleChange}
-              isInvalid={!!errors.terms}
-              feedback={errors.terms}
+              isInvalid={!!errors.term}
+              feedback={errors.term}
               id="loginForm"
             />
           </Form.Group>
-          <Button type="submit" disabled={isSubmitting}>Submit form</Button>
+          <Button type="submit" disabled={isSubmitting || !isValid}>Submit form</Button>
         </Form>
       )}
     </Formik>

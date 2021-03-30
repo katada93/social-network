@@ -1,36 +1,67 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Post from './Post/Post'
 import { addPost } from '../../../redux/profile'
-
+import { Formik } from 'formik'
+import { Form, Button, Container, Row, Col } from 'react-bootstrap'
 import './MyPosts.scss'
 
-
 const MyPosts = () => {
-  const [value, setValue] = useState('')
-  const dispatch = useDispatch()
-
   const { posts } = useSelector(({ profile }) => profile)
 
   const postsElements = posts
     .map(({ id, message, likesCount }) => <Post key={id} id={id} message={message} likesCount={likesCount} />)
 
-  const onAddPost = () => {
-    if (value) {
-      dispatch(addPost(value))
-    }
-    setValue('')
-  }
   return (
     <div>
-      <h2>My posts</h2>
-      {postsElements}
-
-      <div className="add-post">
-        <textarea onChange={(e) => setValue(e.target.value)} placeholder="Enter text" value={value} />
-        <button onClick={onAddPost}>Add new Post</button>
-      </div>
+      <Container>
+        <h2>My posts</h2>
+        <Row>
+          {postsElements}
+          <Col sm={8}>
+            <AddNewPostForm />
+          </Col>
+        </Row>
+      </Container>
     </div >
+  )
+}
+
+const AddNewPostForm = () => {
+  const dispatch = useDispatch()
+  return (
+    <Formik
+      initialValues={{
+        message: '',
+      }}
+      onSubmit={({ message }, { resetForm }) => {
+        if (message) {
+          dispatch(addPost(message))
+          resetForm()
+        }
+      }}
+
+    >
+      {({
+        handleSubmit,
+        handleChange,
+        values
+      }) => (
+        <Form noValidate onSubmit={handleSubmit}>
+          <Form.Group controlId="postForm">
+            <Form.Control
+              as="textarea"
+              name="message"
+              value={values.message}
+              onChange={handleChange}
+              placeholder="message text"
+            />
+          </Form.Group>
+          <Button type="submit" >Send message</Button>
+        </Form>
+      )
+      }
+    </Formik >
   )
 }
 
