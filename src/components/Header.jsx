@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Button, Container } from 'react-bootstrap'
-import { getUserAuthData } from '../redux/auth'
+import { getUserAuthData, logout } from '../redux/auth'
 import { NavLink } from 'react-router-dom'
 
 
@@ -11,9 +11,12 @@ const Header = () => {
   const dispatch = useDispatch()
   const { isAuth, login } = useSelector(({ auth }) => auth)
 
+  const onLogout = () => dispatch(logout())
+
   useEffect(() => {
     dispatch(getUserAuthData())
   }, [])
+
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -26,7 +29,8 @@ const Header = () => {
           </div>
         </NavLink>
         {isAuth
-          ? <span style={{ color: '#fff' }}>{login}</span>
+          ? <> <span style={{ color: '#fff', marginLeft: 'auto' }}>{login}</span>
+            <Button onClick={onLogout} variant="secondary" style={{ marginLeft: '20px' }}>Logout</Button> </>
           : <NavLink to="/login"><Button variant="outline-info">Login</Button></NavLink>}
       </Container>
     </Navbar>

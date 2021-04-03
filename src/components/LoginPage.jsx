@@ -2,8 +2,17 @@ import React from 'react'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { Button, Form } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/auth'
+import { Redirect } from 'react-router'
 
 const LoginPage = () => {
+  const { isAuth } = useSelector(({ auth }) => auth)
+
+  if (isAuth) {
+    return <Redirect to='/profile' />
+  }
+
   return (
     <div className="login-page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h2 style={{ width: '100%', textAlign: 'center', marginBottom: '50px' }}>Login</h2>
@@ -13,25 +22,27 @@ const LoginPage = () => {
 }
 
 const schema = yup.object().shape({
-  login: yup.string().required(),
+  email: yup.string().email('Invalid email address').required(),
   password: yup.string().min(6, 'Must be 6 characters or more').required(),
   term: yup.bool().required().oneOf([true], 'Term must be accepted'),
 });
 
 const LoginForm = () => {
+  const dispatch = useDispatch()
   return (
     <Formik
       validationSchema={schema}
       initialValues={{
-        login: '',
+        email: '',
         password: '',
         term: false
       }}
-      onSubmit={({ login, password, term, isStarted }, { setSubmitting, resetForm }) => {
+      onSubmit={({ email, password, term }, { setSubmitting, resetForm }) => {
         setTimeout(() => {
+          dispatch(login(email, password, term))
           resetForm()
           setSubmitting(false)
-        }, 2000);
+        }, 1000);
       }}
 
     >
@@ -46,19 +57,19 @@ const LoginForm = () => {
         isValid
       }) => (
         <Form noValidate onSubmit={handleSubmit}>
-          <Form.Group controlId="loginFormLogin">
+          <Form.Group controlId="loginFormEmail">
             <Form.Control
-              type="text"
-              name="login"
-              value={values.login}
+              type="email"
+              name="email"
+              value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              isValid={touched.login && !errors.login}
-              isInvalid={!!errors.login}
-              placeholder="login"
+              isValid={touched.email && !errors.email}
+              isInvalid={!!errors.email}
+              placeholder="email"
             />
             <Form.Control.Feedback type="invalid">
-              {errors.login}
+              {errors.email}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="loginFormPassword">

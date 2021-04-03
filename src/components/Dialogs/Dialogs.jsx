@@ -6,6 +6,7 @@ import { Redirect } from 'react-router'
 import { sendMessage } from '../../redux/dialogs'
 import DialogsItem from './DialogsItem/DialogsItem'
 import Message from './Message/Message'
+import * as yup from 'yup'
 import './Dialogs.scss'
 
 const Dialogs = () => {
@@ -37,10 +38,15 @@ const Dialogs = () => {
   )
 }
 
+const schema = yup.object().shape({
+  message: yup.string().max(10, 'Must be 6 characters or less').required()
+});
+
 const AddMessageForm = () => {
   const dispatch = useDispatch()
   return (
     <Formik
+      validationSchema={schema}
       initialValues={{
         message: '',
       }}
@@ -55,6 +61,9 @@ const AddMessageForm = () => {
       {({
         handleSubmit,
         handleChange,
+        handleBlur,
+        touched,
+        errors,
         values
       }) => (
         <Form noValidate onSubmit={handleSubmit}>
@@ -62,12 +71,18 @@ const AddMessageForm = () => {
             <Form.Control
               as="textarea"
               name="message"
-              value={values.message}
               onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.message}
+              isValid={touched.message && !errors.message}
+              isInvalid={!!errors.message}
               placeholder="message text"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.message}
+            </Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit" >Send message</Button>
+          <Button type="submit">Send message</Button>
         </Form>
       )
       }
