@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { authAPI } from '../components/api/api';
 
 const slice = createSlice({
-  name: 'profile',
+  name: 'auth',
   initialState: {
     userId: null,
     login: null,
@@ -26,13 +26,12 @@ const slice = createSlice({
 
 export const { setAuthUserData, setAuthWrang } = slice.actions;
 
-export const getUserAuthData = () => (dispatch) => {
-  authAPI.me().then(({ data }) => {
-    if (data.resultCode === 0) {
-      const { id, email, login } = data.data;
-      dispatch(setAuthUserData({ id, login, email, isAuth: true }));
-    }
-  });
+export const getUserAuthData = () => async (dispatch) => {
+  const { data } = await authAPI.me();
+  if (data.resultCode === 0) {
+    const { id, email, login } = data.data;
+    dispatch(setAuthUserData({ id, login, email, isAuth: true }));
+  }
 };
 
 export const login = (email, password, rememberMe) => (dispatch) => {
